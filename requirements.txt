@@ -10,3 +10,5 @@ git+https://github.com/huggingface/peft.git
 transformers>=4.28.0
 sentencepiece
 gradio==3.44.4
+langchain
+ctransformers

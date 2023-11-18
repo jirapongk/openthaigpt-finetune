@@ -169,3 +169,29 @@ docker-compose logs -f
 docker-compose down --volumes --rmi all
 ```
 
+# How to fine tune and export to GGML
+this part from https://github.com/Oxen-AI/Llama-Fine-Tune/tree/main
+
+Merge the LORA weights
+
+```
+python merge_lora_model.py results/final_checkpoint/ results/merged_model
+```
+
+Convert the merged model from hf to ggml
+
+```
+python ~/Code/3rdParty/strutive07/llama.cpp/convert.py results/merged_model/ --outtype f16 --outfile results/merged.bin --vocab-dir meta-llama/Llama-2-7b-hf --vocabtype hf
+```
+
+Run the ggml model on CPU
+
+```
+python run_on_cpu.py --model results/merged.bin --prompt prompts/joke_prompt.txt
+```
+
+Quantize the model to q8_0
+
+```
+~/Code/3rdParty/strutive07/llama.cpp/build/bin/quantize results/merged.bin results/merged_ggml_q8_0.bin q8_0
+```
