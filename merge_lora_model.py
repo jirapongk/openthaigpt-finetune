@@ -13,7 +13,7 @@ lora_dir = sys.argv[2]
 # base_model_name = "meta-llama/Llama-2-7b-hf"
 base_model_name = sys.argv[1]
 tokenizer = AutoTokenizer.from_pretrained(base_model_name, trust_remote_code=True)
-model = AutoPeftModelForCausalLM.from_pretrained(lora_dir, device_map=device_map, torch_dtype=torch.bfloat16)
+model = AutoPeftModelForCausalLM.from_pretrained(lora_dir, device_map={"": "cpu"}, torch_dtype=torch.bfloat16)
 
 
 model = model.merge_and_unload()
